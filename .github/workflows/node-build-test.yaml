@@ -10,29 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install xbps static tools
+      - uses: actions/checkout@v4
+
+      - name: Build nodejs (all in one step)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y curl
+          # Install static xbps tools
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /usr/local --strip-components=1
-          # Add the directory to PATH for ALL subsequent steps
-          echo "/usr/local/bin" >> $GITHUB_PATH
-          # Verify immediately (optional)
-          /usr/local/bin/xbps-uhelper --version
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Bootstrap Void build environment
-        run: |
-          # Debug: show PATH to confirm
-          echo $PATH
-          which xbps-uhelper
+          export PATH="/usr/local/bin:$PATH"
+          
+          # Verify xbps tools work
+          xbps-uhelper --version
+          
+          # Bootstrap and build
           ./xbps-src binary-bootstrap
-
-      - name: Build nodejs
-        run: |
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
