@@ -9,16 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/void-linux/void-linux:latest-musl
-      options: --user root
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code on host
+        uses: actions/checkout@v4
 
-      - name: Bootstrap and build
+      - name: Build in Void container
         run: |
-          ./xbps-src binary-bootstrap
-          ./xbps-src pkg nodejs
+          # Run the Void musl container, mount the workspace
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            ghcr.io/void-linux/void-buildroot-musl:latest \
+            /bin/bash -c "
+              # Inside container: xbps-src is already installed
+              ./xbps-src binary-bootstrap
+              ./xbps-src pkg nodejs
+            "
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
