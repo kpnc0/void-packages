@@ -9,21 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/void-linux/void-buildroot-musl:latest
-      options: --user root
     steps:
-      - name: Install git (missing in the container)
-        run: xbps-install -Sy git
+      - name: Install xbps static tools
+        run: |
+          curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
+          sudo tar -xJf xbps-static.tar.xz -C /usr/local --strip-components=1
+          sudo ln -sf /usr/local/bin/xbps-* /usr/bin/ || true
+          xbps-uhelper --version
 
       - uses: actions/checkout@v4
-        with:
-          # Use the container's git, not the runner's
-          set-safe-directory: false
 
-      - name: Bootstrap and build
+      - name: Bootstrap Void build environment
         run: |
+          # Create masterdir with proper permissions
+          mkdir -p masterdir-x86_64-musl
           ./xbps-src binary-bootstrap
+
+      - name: Build nodejs
+        run: |
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
