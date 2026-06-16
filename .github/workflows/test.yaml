@@ -1,0 +1,28 @@
+name: Test Node.js musl build
+
+on:
+  push:
+    branches: [nodejs-update]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/void-linux/void-buildroot-musl:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup repos
+        run: |
+          mkdir -p /etc/xbps.d
+          cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
+          sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*.conf
+          xbps-install -Syu
+      - name: Bootstrap
+        run: ./xbps-src binary-bootstrap
+      - name: Build
+        run: ./xbps-src pkg nodejs
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: nodejs-musl
+          path: hostdir/binpkgs/nodejs-*.xbps
