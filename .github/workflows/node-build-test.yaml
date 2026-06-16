@@ -12,20 +12,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install xbps static tools
+      - name: Install xbps static tools and proot
         run: |
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /
-
-      - name: Install proot (for unprivileged chroot)
-        run: |
           sudo apt-get update
           sudo apt-get install -y proot
 
-      - name: Bootstrap and build
+      - name: Create masterdir with proper permissions
         run: |
-          ./xbps-src -m proot binary-bootstrap
-          ./xbps-src -m proot pkg nodejs
+          mkdir -p masterdir-x86_64-musl
+          chmod 755 masterdir-x86_64-musl
+
+      - name: Bootstrap using proot
+        run: |
+          ./xbps-src -m masterdir-x86_64-musl -E proot binary-bootstrap
+
+      - name: Build nodejs using proot
+        run: |
+          ./xbps-src -m masterdir-x86_64-musl -E proot pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
