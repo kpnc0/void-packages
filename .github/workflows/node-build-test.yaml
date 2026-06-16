@@ -12,24 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up xbps-src
+      - name: Install xbps static tools
         run: |
-          # Download and extract xbps static tools
           wget -q https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static-latest.x86_64-musl.tar.xz -C /usr/local --strip-components=1
-          # Create a wrapper that sets LD_LIBRARY_PATH
-          echo '#!/bin/sh' | sudo tee /usr/local/bin/xbps-wrapper
-          echo 'export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH' | sudo tee -a /usr/local/bin/xbps-wrapper
-          echo 'exec /usr/local/bin/$0 "$@"' | sudo tee -a /usr/local/bin/xbps-wrapper
-          sudo chmod +x /usr/local/bin/xbps-wrapper
-          # Use the wrapper for all xbps commands
-          for cmd in xbps-install xbps-query xbps-rindex xbps-uhelper xbps-reconfigure xbps-remove xbps-create xbps-uchroot xbps-uunshare; do
-            sudo ln -sf xbps-wrapper /usr/local/bin/$cmd
-          done
 
       - name: Bootstrap and build
         run: |
-          export PATH="/usr/local/bin:$PATH"
+          export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          /usr/local/bin/xbps-uhelper --version
           ./xbps-src binary-bootstrap
           ./xbps-src pkg nodejs
 
