@@ -4,7 +4,7 @@ name: Test Node.js Build (musl only) for compatibility detection
 on:
   push:
     branches:
-      - nodejs-update
+      - node-compile-test
   # Optional: allow manual trigger from GitHub UI
   workflow_dispatch:
 
