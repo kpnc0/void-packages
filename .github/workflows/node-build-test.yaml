@@ -17,10 +17,15 @@ jobs:
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /
 
+      - name: Install proot (for unprivileged chroot)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y proot
+
       - name: Bootstrap and build
         run: |
-          ./xbps-src binary-bootstrap
-          ./xbps-src pkg nodejs
+          ./xbps-src -m proot binary-bootstrap
+          ./xbps-src -m proot pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
