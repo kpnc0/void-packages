@@ -12,17 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install xbps static tools and proot
+      - name: Install xbps static tools
         run: |
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /
-          sudo apt-get update
-          sudo apt-get install -y proot
 
-      - name: Bootstrap and build
+      - name: Bootstrap and build (no chroot)
         run: |
-          ./xbps-src -m proot binary-bootstrap
-          ./xbps-src -m proot pkg nodejs
+          ./xbps-src -t binary-bootstrap
+          ./xbps-src -t pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
