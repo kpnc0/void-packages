@@ -9,18 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/void-linux/void-linux:latest-musl
+      options: --user root
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install xbps static tools
+      - name: Bootstrap and build
         run: |
-          curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
-          sudo tar -xJf xbps-static.tar.xz -C /
-
-      - name: Bootstrap and build (no chroot)
-        run: |
-          ./xbps-src -t binary-bootstrap
-          ./xbps-src -t pkg nodejs
+          ./xbps-src binary-bootstrap
+          ./xbps-src pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
