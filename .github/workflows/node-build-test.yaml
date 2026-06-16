@@ -16,10 +16,11 @@ jobs:
           sudo apt-get install -y curl
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /usr/local --strip-components=1
-          # Add /usr/local/bin to PATH for subsequent steps
-          echo "/usr/local/bin" >> $GITHUB_PATH
-          # Verify installation
-          /usr/local/bin/xbps-uhelper --version
+          # Create a wrapper script for xbps-src to find them
+          sudo mkdir -p /opt/xbps/bin
+          sudo ln -sf /usr/local/bin/xbps-* /opt/xbps/bin/
+          export PATH="/opt/xbps/bin:$PATH"
+          echo "PATH=/opt/xbps/bin:$PATH" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v4
