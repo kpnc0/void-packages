@@ -16,8 +16,10 @@ jobs:
           sudo apt-get install -y curl
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           sudo tar -xJf xbps-static.tar.xz -C /usr/local --strip-components=1
-          sudo ln -sf /usr/local/bin/xbps-* /usr/bin/ 2>/dev/null || true
-          xbps-uhelper --version
+          # Add /usr/local/bin to PATH for subsequent steps
+          echo "/usr/local/bin" >> $GITHUB_PATH
+          # Verify installation
+          /usr/local/bin/xbps-uhelper --version
 
       - name: Checkout code
         uses: actions/checkout@v4
