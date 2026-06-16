@@ -1,42 +1,32 @@
-name: Test Node.js musl build
+name: Build nodejs on musl
 
 on:
   push:
-    branches: [node-compile-test, test]
+    branches:
+      - node-compile-test
   workflow_dispatch:
 
 jobs:
-  build-musl:
-    name: Build nodejs on x86_64-musl
+  build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/void-linux/void-buildroot-musl:latest
     steps:
-      - name: Prepare container
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies for xbps-src
         run: |
-          # Switch to repo-ci mirror for faster downloads
-          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
-          sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
-          # Sync and upgrade (two-stage to handle xbps updates)
-          xbps-install -Syu || xbps-install -yu xbps
-          xbps-install -yu
+          sudo apt-get update
+          sudo apt-get install -y git make gcc libc-dev curl
 
-      - name: Clone and checkout
-        uses: actions/checkout@v4
-
-      - name: Create hostrepo and prepare masterdir
+      - name: Bootstrap Void build environment
         run: |
-          ln -s "$(pwd)" /hostrepo
-          common/travis/set_mirror.sh
-          common/travis/prepare.sh
-          common/travis/fetch-xtools.sh
+          ./xbps-src binary-bootstrap
 
-      - name: Build nodejs package
+      - name: Build nodejs
         run: |
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
         with:
-          name: nodejs-x86_64-musl
+          name: nodejs-musl
           path: hostdir/binpkgs/nodejs-*.xbps
