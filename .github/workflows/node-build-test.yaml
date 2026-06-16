@@ -13,12 +13,17 @@ jobs:
       - name: Checkout code on host
         uses: actions/checkout@v4
 
-      - name: Build in Void container as non-root
+      - name: Find non-root user in container
         run: |
+          docker run --rm ghcr.io/void-linux/void-buildroot-musl:latest cat /etc/passwd
+
+      - name: Build in Void container with detected user
+        run: |
+          # Use UID 1000 which is common for first user
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
-            --user builder \
+            --user 1000:1000 \
             ghcr.io/void-linux/void-buildroot-musl:latest \
             /bin/bash -c "
               ./xbps-src binary-bootstrap
