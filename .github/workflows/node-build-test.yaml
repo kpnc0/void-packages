@@ -12,15 +12,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install xbps static tools
+      - name: Install and verify xbps static tools
         run: |
-          wget -q https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
-          sudo tar -xJf xbps-static-latest.x86_64-musl.tar.xz -C /usr/local --strip-components=1
+          # Download
+          curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
+          
+          # Extract to /tmp first (avoid permission issues)
+          mkdir -p /tmp/xbps-static
+          tar -xJf xbps-static.tar.xz -C /tmp/xbps-static --strip-components=1
+          
+          # List what we got
+          ls -la /tmp/xbps-static/bin/
+          
+          # Copy to /usr/local/bin
+          sudo cp /tmp/xbps-static/bin/* /usr/local/bin/
+          
+          # Verify the file exists
+          ls -la /usr/local/bin/xbps-uhelper
+          
+          # Test it
+          /usr/local/bin/xbps-uhelper --version
 
       - name: Bootstrap and build
         run: |
-          export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-          /usr/local/bin/xbps-uhelper --version
+          export PATH="/usr/local/bin:$PATH"
           ./xbps-src binary-bootstrap
           ./xbps-src pkg nodejs
 
