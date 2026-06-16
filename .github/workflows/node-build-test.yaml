@@ -17,25 +17,20 @@ jobs:
           # Download
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
           
-          # Extract to /tmp first (avoid permission issues)
-          mkdir -p /tmp/xbps-static
-          tar -xJf xbps-static.tar.xz -C /tmp/xbps-static --strip-components=1
+          # Extract and list contents to see structure
+          tar -tvf xbps-static.tar.xz | head -20
           
-          # List what we got
-          ls -la /tmp/xbps-static/bin/
+          # Extract all files
+          sudo tar -xJf xbps-static.tar.xz -C /
           
-          # Copy to /usr/local/bin
-          sudo cp /tmp/xbps-static/bin/* /usr/local/bin/
-          
-          # Verify the file exists
-          ls -la /usr/local/bin/xbps-uhelper
+          # Now find where the binaries went
+          find /usr -name "xbps-uhelper" 2>/dev/null
           
           # Test it
-          /usr/local/bin/xbps-uhelper --version
+          xbps-uhelper --version || /usr/bin/xbps-uhelper --version || /usr/local/bin/xbps-uhelper --version
 
       - name: Bootstrap and build
         run: |
-          export PATH="/usr/local/bin:$PATH"
           ./xbps-src binary-bootstrap
           ./xbps-src pkg nodejs
 
