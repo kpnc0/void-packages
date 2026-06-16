@@ -1,1 +1,41 @@
-# this is a workflow
+#name: Test Node.js Build (musl only) for compatibility detection
+
+# Trigger the workflow when you push to your test branch
+on:
+  push:
+    branches:
+      - nodejs-update
+  # Optional: allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  build-musl:
+    name: Build nodejs on x86_64-musl
+    runs-on: ubuntu-latest
+    container:
+      # The official Void Linux musl build container
+      image: ghcr.io/void-linux/void-buildroot-musl:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Prepare container repositories
+        run: |
+          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
+          sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
+          xbps-install -Syu || xbps-install -yu xbps
+          xbps-install -yu
+
+      - name: Bootstrap xbps-src
+        run: |
+          ./xbps-src binary-bootstrap
+
+      - name: Build nodejs package
+        run: |
+          ./xbps-src pkg nodejs
+
+      - name: Upload binary package
+        uses: actions/upload-artifact@v4
+        with:
+          name: nodejs-x86_64-musl
+          path: hostdir/binpkgs/nodejs-*.xbps
