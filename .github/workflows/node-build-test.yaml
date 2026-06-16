@@ -12,26 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install and verify xbps static tools
+      - name: Install xbps static tools
         run: |
-          # Download
           curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
-          
-          # Extract and list contents to see structure
-          tar -tvf xbps-static.tar.xz | head -20
-          
-          # Extract all files
           sudo tar -xJf xbps-static.tar.xz -C /
-          
-          # Now find where the binaries went
-          find /usr -name "xbps-uhelper" 2>/dev/null
-          
-          # Test it
-          xbps-uhelper --version || /usr/bin/xbps-uhelper --version || /usr/local/bin/xbps-uhelper --version
 
       - name: Bootstrap and build
         run: |
-          ./xbps-src binary-bootstrap
+          sudo ./xbps-src binary-bootstrap
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
