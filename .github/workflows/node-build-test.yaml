@@ -1,4 +1,4 @@
-name: Test Node.js Build (musl only)
+name: Test Node.js Build (musl only) for compatibility detection
 
 # Trigger the workflow when you push to your test branch
 on:
