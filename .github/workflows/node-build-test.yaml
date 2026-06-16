@@ -1,37 +1,26 @@
-name: Test Node.js Build (musl only) for compatibility detection
+name: Test Node.js musl build
 
-# Trigger the workflow when you push to your test branch
 on:
   push:
-    branches:
-      - node-compile-test
-  # Optional: allow manual trigger from GitHub UI
+    branches: [nodejs-update, test]
   workflow_dispatch:
 
 jobs:
   build-musl:
-    name: Build nodejs on x86_64-musl
     runs-on: ubuntu-latest
-    container:
-      # The official Void Linux musl build container
-      image: ghcr.io/void-linux/void-buildroot-musl:latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Prepare container repositories
+      - name: Install Void Linux build dependencies
         run: |
-          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
-          sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
-          xbps-install -Syu || xbps-install -yu xbps
-          xbps-install -yu
+          sudo apt-get update
+          sudo apt-get install -y curl xz-utils
+          # Download and set up Void's xbps-src requirements
+          curl -s https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz | sudo tar -xJ -C /usr/local
 
-      - name: Bootstrap xbps-src
+      - name: Bootstrap and build
         run: |
           ./xbps-src binary-bootstrap
-
-      - name: Build nodejs package
-        run: |
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
