@@ -12,13 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies for xbps-src
+      - name: Install xbps static tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git make gcc libc-dev curl
+          # Download static xbps binaries for musl
+          curl -L -o xbps-static.tar.xz https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
+          sudo tar -xJf xbps-static.tar.xz -C /usr/local --strip-components=1
+          # Verify installation
+          xbps-uhelper --version
 
       - name: Bootstrap Void build environment
         run: |
+          # Create masterdir (needs to run as non-root; xbps-src will use uchroot/unshare)
           ./xbps-src binary-bootstrap
 
       - name: Build nodejs
