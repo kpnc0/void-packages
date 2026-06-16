@@ -19,7 +19,7 @@ jobs:
 
       - name: Bootstrap and build
         run: |
-          sudo ./xbps-src binary-bootstrap
+          ./xbps-src binary-bootstrap
           ./xbps-src pkg nodejs
 
       - name: Upload binary package
