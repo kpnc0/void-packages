@@ -13,15 +13,14 @@ jobs:
       - name: Checkout code on host
         uses: actions/checkout@v4
 
-      - name: Build in Void container
+      - name: Build in Void container as non-root
         run: |
-          # Run the Void musl container, mount the workspace
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
+            --user builder \
             ghcr.io/void-linux/void-buildroot-musl:latest \
             /bin/bash -c "
-              # Inside container: xbps-src is already installed
               ./xbps-src binary-bootstrap
               ./xbps-src pkg nodejs
             "
