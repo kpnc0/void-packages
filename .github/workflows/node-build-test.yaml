@@ -2,7 +2,7 @@ name: Test Node.js musl build
 
 on:
   push:
-    branches: [nodejs-update, test]
+    branches: [node-compile-test, test]
   workflow_dispatch:
 
 jobs:
