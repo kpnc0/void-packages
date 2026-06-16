@@ -19,18 +19,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y proot
 
-      - name: Create masterdir with proper permissions
+      - name: Bootstrap and build
         run: |
-          mkdir -p masterdir-x86_64-musl
-          chmod 755 masterdir-x86_64-musl
-
-      - name: Bootstrap using proot
-        run: |
-          ./xbps-src -m masterdir-x86_64-musl -E proot binary-bootstrap
-
-      - name: Build nodejs using proot
-        run: |
-          ./xbps-src -m masterdir-x86_64-musl -E proot pkg nodejs
+          ./xbps-src -m proot binary-bootstrap
+          ./xbps-src -m proot pkg nodejs
 
       - name: Upload binary package
         uses: actions/upload-artifact@v4
