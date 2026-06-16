@@ -5,6 +5,8 @@ on:
     branches:
       - node-compile-test
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -42,14 +44,29 @@ jobs:
         run: |
           sudo -Eu builder ./xbps-src pkg nodejs
 
-      - name: Copy artifact to host
+      # 5. Find and set the XBPS package path
+      - name: Find and set XBPS package path
+        id: verify_xbps
         run: |
-          mkdir -p /tmp/artifacts
-          cp hostdir/binpkgs/nodejs-*.xbps /tmp/artifacts/ 2>/dev/null || true
-          ls -la /tmp/artifacts/
+          XBPS_FILE=$(find hostdir/binpkgs -name "nodejs-*.xbps" | head -n 1)
+          if [ -z "$XBPS_FILE" ]; then
+            echo "No nodejs xbps package found!"
+            exit 1
+          fi
+          echo "xbps_path=$XBPS_FILE" >> $GITHUB_OUTPUT
+          echo "Found XBPS package at: $XBPS_FILE"
 
+      # 6. Upload artifact (always runs, for workflow debugging)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: nodejs-musl
-          path: /tmp/artifacts/nodejs-*.xbps
+          path: ${{ steps.verify_xbps.outputs.xbps_path }}
+
+      # 7. Attach to GitHub Release (only runs on release events)
+      - name: Attach XBPS package to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.verify_xbps.outputs.xbps_path }}
+          token: ${{ secrets.GITHUB_TOKEN }}
