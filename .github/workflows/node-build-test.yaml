@@ -42,9 +42,14 @@ jobs:
         run: |
           sudo -Eu builder ./xbps-src pkg nodejs
 
-      # 5. Upload the resulting binary package
+      - name: Copy artifact to host
+        run: |
+          mkdir -p /tmp/artifacts
+          cp hostdir/binpkgs/nodejs-*.xbps /tmp/artifacts/ 2>/dev/null || true
+          ls -la /tmp/artifacts/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: nodejs-musl
-          path: hostdir/binpkgs/nodejs-*.xbps
+          path: /tmp/artifacts/nodejs-*.xbps
