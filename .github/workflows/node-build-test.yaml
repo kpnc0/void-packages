@@ -18,12 +18,12 @@ jobs:
       volumes:
         - /dev:/dev
     steps:
-      # 1. Prepare container (mirrors, deps, non‑root user)
+      # 1. Prepare container (mirrors, deps, non‑root user) install nodejs
       - name: Prepare container
         run: |
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
           sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
-          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git
+          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git nodejs
           useradd -G xbuilder -M builder
 
       # 2. Checkout code (works inside container, no Node.js needed)
