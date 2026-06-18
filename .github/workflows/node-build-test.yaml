@@ -51,12 +51,6 @@ jobs:
           echo "xbps_path=$XBPS_FILE" >> $GITHUB_OUTPUT
           echo "Found XBPS package at: $XBPS_FILE"
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nodejs-musl
-          path: ${{ steps.verify_xbps.outputs.xbps_path }}
-
       - name: Attach XBPS package to GitHub Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
