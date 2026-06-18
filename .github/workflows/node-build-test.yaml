@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xbps-binary
-          path: target/x86_64-unknown-linux-musl/release/webcatch
+          path: hostdir/binpkgs/nodejs-devel-26.3.0_1.x86_64-musl.xbps
 
       # 7. Attach to GitHub Release (only runs on release events)
       - name: Attach XBPS package to GitHub Release
