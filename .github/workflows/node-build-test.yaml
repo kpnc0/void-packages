@@ -57,16 +57,16 @@ jobs:
           echo "Found XBPS package at: $XBPS_FILE"
 
       # 6. Upload artifact (always runs, for workflow debugging)
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
         with:
-          name: nodejs-musl
-          path: ${{ steps.verify_xbps.outputs.xbps_path }}
+          name: xbps-binary
+          path: target/x86_64-unknown-linux-musl/release/webcatch
 
       # 7. Attach to GitHub Release (only runs on release events)
       - name: Attach XBPS package to GitHub Release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.verify_xbps.outputs.xbps_path }}
           token: ${{ secrets.GITHUB_TOKEN }}
