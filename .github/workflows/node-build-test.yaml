@@ -58,7 +58,7 @@ jobs:
 
       # 6. Upload artifact (always runs, for workflow debugging)
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: nodejs-musl
           path: ${{ steps.verify_xbps.outputs.xbps_path }}
@@ -66,7 +66,7 @@ jobs:
       # 7. Attach to GitHub Release (only runs on release events)
       - name: Attach XBPS package to GitHub Release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
           files: ${{ steps.verify_xbps.outputs.xbps_path }}
           token: ${{ secrets.GITHUB_TOKEN }}
