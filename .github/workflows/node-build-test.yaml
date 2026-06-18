@@ -11,14 +11,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     container:
       image: ghcr.io/void-linux/void-musl-full
-      # needed for prepare.sh (to run chroot operations)
       options: --privileged
       volumes:
         - /dev:/dev
     steps:
-      # 1. Prepare container (mirrors, deps, non‑root user) install nodejs
       - name: Prepare container
         run: |
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
@@ -26,25 +26,20 @@ jobs:
           xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git nodejs
           useradd -G xbuilder -M builder
 
-      # 2. Checkout code (works inside container, no Node.js needed)
       - name: Checkout
         uses: classabbyamp/treeless-checkout-action@v1
 
-      # 3. Prepare xbps-src masterdir (as builder)
       - name: Prepare masterdir
         run: |
           chown -R builder:builder .
           sudo -Eu builder common/travis/set_mirror.sh
           sudo -Eu builder common/travis/prepare.sh
-          # fetch-xtools is optional; only needed for some advanced features
           common/travis/fetch-xtools.sh
 
-      # 4. Build nodejs (as builder)
       - name: Build nodejs
         run: |
           sudo -Eu builder ./xbps-src pkg nodejs
 
-      # 5. Find and set the XBPS package path
       - name: Find and set XBPS package path
         id: verify_xbps
         run: |
@@ -56,14 +51,12 @@ jobs:
           echo "xbps_path=$XBPS_FILE" >> $GITHUB_OUTPUT
           echo "Found XBPS package at: $XBPS_FILE"
 
-      # 6. Upload artifact (always runs, for workflow debugging)
-      - name: Upload binary
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: xbps-binary
-          path: hostdir/binpkgs/nodejs-devel-26.3.0_1.x86_64-musl.xbps
+          name: nodejs-musl
+          path: ${{ steps.verify_xbps.outputs.xbps_path }}
 
-      # 7. Attach to GitHub Release (only runs on release events)
       - name: Attach XBPS package to GitHub Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
