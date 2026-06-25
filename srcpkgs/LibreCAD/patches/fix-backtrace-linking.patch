@@ -1,0 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -936,6 +936,12 @@ if(WIN32)
+ else()
+     # Export symbols so backtrace_symbols() can resolve global function names.
+     set_target_properties(librecad PROPERTIES ENABLE_EXPORTS ON)
++
++    # Link execinfo for backtrace functions
++    find_library(EXECINFO_LIBRARY NAMES execinfo)
++    if(EXECINFO_LIBRARY)
++       target_link_libraries(librecad PRIVATE ${EXECINFO_LIBRARY})
++    endif()
+ endif()
+ set_target_properties(librecad PROPERTIES
+ WIN32_EXECUTABLE ON
+
