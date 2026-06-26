@@ -1,6 +1,6 @@
 # Template file for 'goffice'
 pkgname=goffice
-version=0.10.57
+version=0.10.61
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake pkg-config pcre gettext-devel intltool libtool
@@ -12,7 +12,7 @@ license="GPL-2.0-or-later"
 maintainer="Orphaned <orphan@voidlinux.org>"
 homepage="https://github.com/GNOME/goffice"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=66bfd7e31d2f6756d5a62c3670383cbba02b3cb4c1042950192a801b72a3c9ab
+checksum=558597fd9ca59b93ff562750218d1e7ea8ec3c8d0ed6a5cc096aa715ef909a15
 
 pre_configure() {
 	autoreconf -if
