@@ -10,5 +10,5 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="Apache-2.0"
 homepage="https://github.com/theorzr/portablemc"
 changelog="https://github.com/theorzr/portablemc/releases"
-distfiles="https://github.com/theorzr/portablemc/archive/refs/tags/${version}.tar.gz"
+distfiles="https://crates.io/api/v1/crates/${pkgname}/${version}/download>${pkgname}-${version}.tar.gz"
 checksum=471b6280c8aa0979956b85d54dfd216855a47f8517a9a1d3e5286e4044adaac5
