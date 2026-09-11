@@ -13,7 +13,11 @@ changelog="https://github.com/theorzr/portablemc/releases"
 distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crate"
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
 
+post_build() {
+	cargo build --release --target "${RUST_TARGET}" --package xtask
+	CARGO_MANIFEST_DIR=./xtask vtargetrun target/"${RUST_TARGET}"/release/xtask dist "${RUST_TARGET}"
+}
+
 do_install() {
-	cargo xtask dist ${RUST_TARGET}
 	vbin target/${RUST_TARGET}/release/portablemc
 }
