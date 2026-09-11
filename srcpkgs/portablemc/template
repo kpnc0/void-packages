@@ -10,5 +10,10 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="Apache-2.0"
 homepage="https://github.com/theorzr/portablemc"
 changelog="https://github.com/theorzr/portablemc/releases"
-distfiles="https://crates.io/api/v1/crates/${pkgname}/${version}/download>${pkgname}-${version}.tar.gz"
+distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crate"
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
+
+do_install() {
+	cargo xtask dist ${RUST_TARGET}
+	vbin target/${RUST_TARGET}/release/portablemc
+}
