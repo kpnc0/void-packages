@@ -14,6 +14,10 @@ distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crat
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
 
 do_install() {
-	find target -name "portablemc" -type f 2>/dev/null || true
-	vbin target/${RUST_TARGET}/release/portablemc
+	local _target="${RUST_TARGET:-}"
+	if [ -n "$_target" ] && [ -f "target/${_target}/release/portablemc" ]; then
+		vbin "target/${_target}/release/portablemc"
+	else
+    vbin target/release/portablemc
+  fi
 }
