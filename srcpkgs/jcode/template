@@ -1,0 +1,18 @@
+# Template file for 'jcode'
+pkgname=jcode
+version=0.84.0
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config cmake perl"
+makedepends="oniguruma-devel sqlite-devel openssl-devel"
+short_desc="RAM effecient AI coding agent built on rust"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="MIT"
+homepage="https://jcode.sh/"
+changelog="https://github.com/1jehuang/jcode/releases"
+distfiles="https://github.com/1jehuang/jcode/archive/v${version}.tar.gz"
+checksum=fdfc364d53989fe2b30f05f35844402decc813148caea1face4e7f588a671887
+
+post_install() {
+	vlicense LICENSE
+}
