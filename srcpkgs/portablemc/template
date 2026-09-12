@@ -14,15 +14,5 @@ distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crat
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
 
 do_install() {
-    local bin_path
-    # Check the musl target path first (if RUST_TARGET is set)
-    if [ -n "$RUST_TARGET" ] && [ -f "target/${RUST_TARGET}/release/portablemc" ]; then
-        bin_path="target/${RUST_TARGET}/release/portablemc"
-    # Fallback to the default host path
-    elif [ -f "target/release/portablemc" ]; then
-        bin_path="target/release/portablemc"
-    else
-        msg_error "portablemc binary not found in expected locations\n"
-    fi
-    vbin "$bin_path"
+	vbin target/release/portablemc
 }
