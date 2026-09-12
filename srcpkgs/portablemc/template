@@ -14,6 +14,7 @@ distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crat
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
 
 do_install() {
-	find target -type f -name portablemc -executable 2>/dev/null
-	find target -type f -name 'portablemc*' 2>/dev/null
+    find "target/${RUST_TARGET}/release" \
+        -maxdepth 1 -type f -perm -0100 -name portablemc \
+        -exec install -Dm755 '{}' "${PKGDESTDIR}/usr/bin/portablemc" \;
 }
