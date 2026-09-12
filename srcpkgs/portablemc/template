@@ -14,12 +14,8 @@ distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crat
 checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
 
 do_install() {
-    local bin_path
-    bin_path=$(find target -name portablemc -type f -executable | head -n 1)
-
-    if [ -z "$bin_path" ]; then
-        echo "portablemc binary not found under target/\n"
-    fi
-
-    vbin "$bin_path"
+	find target/"$RUST_TARGET"/release \
+		! -path target/"$RUST_TARGET"/release -prune \
+		-type f -perm -0100 -name portablemc \
+		-exec install -Dm755 -t "$PKGDESTDIR"/usr/bin '{}' \+
 }
