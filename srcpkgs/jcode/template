@@ -11,4 +11,4 @@ license="MIT"
 homepage="https://jcode.sh/"
 changelog="https://github.com/1jehuang/jcode/releases"
 distfiles="https://github.com/1jehuang/jcode/archive/v${version}.tar.gz"
-checksum=7c273046a1574f00596326f54f5bb49aafdfc6afb2e290cb41bcb51b261213b1
+checksum=fdfc364d53989fe2b30f05f35844402decc813148caea1face4e7f588a671887
