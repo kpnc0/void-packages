@@ -1,0 +1,14 @@
+# Template file for 'portablemc-cli'
+pkgname=portablemc-cli
+version=5.0.5
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config"
+makedepends="libzstd-devel"
+short_desc="Minecraft launcher with Mojang and mod loader support"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="Apache-2.0"
+homepage="https://github.com/theorzr/portablemc"
+changelog="https://github.com/theorzr/portablemc/releases"
+distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crate"
+checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f

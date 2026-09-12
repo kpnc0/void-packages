@@ -1,4 +1,4 @@
-name: Build portablemc on musl
+name: Build portablemc-cli on musl
 
 on:
   push:
@@ -35,16 +35,16 @@ jobs:
           sudo -Eu builder common/travis/prepare.sh
           common/travis/fetch-xtools.sh
 
-      - name: Build portablemc
+      - name: Build portablemc-cli
         run: |
-          sudo -Eu builder ./xbps-src pkg portablemc
+          sudo -Eu builder ./xbps-src pkg portablemc-cli
 
       - name: Find and set XBPS package path
         id: verify_xbps
         run: |
-          XBPS_FILE=$(find hostdir/binpkgs -name "portablemc-*.xbps" | head -n 1)
+          XBPS_FILE=$(find hostdir/binpkgs -name "portablemc-cli-*.xbps" | head -n 1)
           if [ -z "$XBPS_FILE" ]; then
-            echo "No portablemc xbps package found!"
+            echo "No portablemc-cli xbps package found!"
             exit 1
           fi
           echo "xbps_path=$XBPS_FILE" >> $GITHUB_OUTPUT
@@ -67,7 +67,7 @@ jobs:
           git config user.name "Void Bot"
 
           git add -f packages/*.xbps
-          git commit -m "Add portablemc package from ${{ github.sha }}"
+          git commit -m "Add portablemc-cli package from ${{ github.sha }}"
           git push -f origin master
         env:
           PERSONAL_PAT: ${{ secrets.PERSONAL_PAT}}
