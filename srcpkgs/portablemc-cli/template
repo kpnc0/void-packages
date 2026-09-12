@@ -11,4 +11,4 @@ license="Apache-2.0"
 homepage="https://github.com/theorzr/portablemc"
 changelog="https://github.com/theorzr/portablemc/releases"
 distfiles="https://static.crates.io/crates/${pkgname}/${pkgname}-${version}.crate"
-checksum=bd8558231180f57fefd5c1bc13561df68bae7d67080f43b52b2fa6f57f4fcd0f
+checksum=7c273046a1574f00596326f54f5bb49aafdfc6afb2e290cb41bcb51b261213b1
