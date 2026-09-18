@@ -14,3 +14,7 @@ checksum=433d630a7145378e5e13868999c5ba2c3e22dc569871d45970b921ac721dfccb
 nocross=yes
 nopie_files="/usr/bin/cgrep"
 conflicts="codesearch"
+
+post_patch() {
+    mv test/test.cabal test/my-app.cabal
+}

@@ -1,7 +1,7 @@
-diff --git a/test/test.cabal b/test/my-app.cabal
+diff --git a/test/test.cabal b/test/test.cabal
 index 2516098..a6ad185 100644
 --- a/test/test.cabal
-+++ b/test/my-app.cabal
++++ b/test/test.cabal
 @@ -1,5 +1,3 @@
 --- Comment: This is the Cabal specification version used for the file.
 --- Reserved Keyword: 'cabal-version'
