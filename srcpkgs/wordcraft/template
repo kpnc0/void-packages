@@ -1,0 +1,39 @@
+# Template file for 'wordcraft'
+pkgname=wordcraft
+version=0.5.0
+revision=1
+build_style=cargo
+make_build_args="--bins"
+depends="libxkbcommon vulkan-loader desktop-file-utils hicolor-icon-theme shared-mime-info"
+short_desc="Clean-room, Rust-native Word-compatible word processor"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="MIT, Apache-2.0"
+homepage="https://getartcraft.com/apps/wordcraft"
+distfiles="https://github.com/storytold/wordcraft/archive/refs/tags/v${version}.tar.gz"
+checksum=c51e821775bf5e00e13f01e22fae3d8930adcbc1b0c559821d98fe80a44a8881
+
+
+do_install() {
+	vbin target/${RUST_TARGET}/release/wordcraft
+	vbin target/${RUST_TARGET}/release/wordcraft-cli
+
+	vinstall packaging/linux/ai.storyteller.wordcraft.desktop 644 usr/share/applications
+
+	vinstall packaging/linux/ai.storyteller.wordcraft.mime.xml 644 usr/share/mime/packages
+
+	vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.wordcraft.svg \
+		644 usr/share/icons/hicolor/scalable/apps
+	for _s in 512 256 128 64 48 32 16; do
+		vinstall assets/app-icon/hicolor/${_s}x${_s}/apps/ai.storyteller.wordcraft.png \
+			644 usr/share/icons/hicolor/${_s}x${_s}/apps
+	done
+
+	vlicense LICENSE-MIT
+}
+
+wordcraft-cli_package() {
+	short_desc+=" - CLI tool"
+	pkg_install() {
+		vmove usr/bin/wordcraft-cli
+	}
+}
