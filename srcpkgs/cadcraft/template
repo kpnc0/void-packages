@@ -11,7 +11,7 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT, Apache-2.0"
 homepage="https://getartcraft.com/apps/cadcraft"
 distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
-checksum=11ade2df9cc92f022af13fd93006d7fcfcdd12ebecfa3e7bfcdd5c8ce58e7647
+checksum=4582855972d4a112f838a67414204ba01e3acd178b3891cf5a15d767fa610e28
 
 # Prevent OOM on musl/low-RAM runners during LLVM codegen & linking
 export CARGO_PROFILE_RELEASE_LTO=false
