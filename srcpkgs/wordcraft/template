@@ -30,10 +30,3 @@ do_install() {
 
 	vlicense LICENSE-MIT
 }
-
-wordcraft-cli_package() {
-	short_desc+=" - CLI tool"
-	pkg_install() {
-		vmove usr/bin/wordcraft-cli
-	}
-}
