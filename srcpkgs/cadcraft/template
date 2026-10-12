@@ -1,0 +1,50 @@
+# Template file for 'cadcraft'
+pkgname=cadcraft
+version=0.6.2
+revision=1
+build_style=cargo
+make_build_args="--bins"
+depends="libxkbcommon vulkan-loader desktop-file-utils hicolor-icon-theme
+ shared-mime-info xdg-utils zenity"
+short_desc="Clean-room, Rust-native AutoCAD-compatible CAD application"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="MIT, Apache-2.0"
+homepage="https://getartcraft.com/apps/cadcraft"
+distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
+checksum=11ade2df9cc92f022af13fd93006d7fcfcdd12ebecfa3e7bfcdd5c8ce58e7647
+
+# Prevent OOM on musl/low-RAM runners during LLVM codegen & linking
+export CARGO_PROFILE_RELEASE_LTO=false
+export CARGO_PROFILE_RELEASE_DEBUG=0
+export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
+export RUST_MIN_STACK=16777216
+
+do_build() {
+	# Build binaries sequentially so two heavy link steps never collide in RAM
+	cargo auditable build --release --locked --target ${RUST_TARGET} \
+		${configure_args} --bin cadcraft
+	cargo auditable build --release --locked --target ${RUST_TARGET} \
+		${configure_args} --bin cadcraft-cli
+}
+
+do_install() {
+	vbin target/${RUST_TARGET}/release/cadcraft
+	vbin target/${RUST_TARGET}/release/cadcraft-cli
+
+	# Desktop entry & MIME definitions (.dxf / .dwg associations)
+	vinstall packaging/linux/ai.storyteller.cadcraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/ai.storyteller.cadcraft.mime.xml 644 usr/share/mime/packages
+
+	# Raster app icons (cadcraft ships 16..512 including 24x24; check if scalable SVG exists)
+	if [ -f assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg ]; then
+		vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg \
+			644 usr/share/icons/hicolor/scalable/apps
+	fi
+	for _s in 512 256 128 64 48 32 24 16; do
+		vinstall assets/app-icon/hicolor/${_s}x${_s}/apps/ai.storyteller.cadcraft.png \
+			644 usr/share/icons/hicolor/${_s}x${_s}/apps
+	done
+
+	vlicense LICENSE-MIT
+	vdoc README.md
+}
