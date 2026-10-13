@@ -11,7 +11,7 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT, Apache-2.0"
 homepage="https://getartcraft.com/apps/gridcraft"
 distfiles="https://github.com/storytold/gridcraft/archive/refs/tags/v${version}.tar.gz"
-checksum=8c3997854e19d385aa00082e3f8de091ed4f65127be0b195cb826b3cb3083380
+checksum=5b36f9f9117c5c9abf0ed12d6be734761802d623130c86b53a95df35a2fe0d35
 
 export CARGO_PROFILE_RELEASE_LTO=fat
 export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
