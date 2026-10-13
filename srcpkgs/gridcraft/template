@@ -13,16 +13,13 @@ homepage="https://getartcraft.com/apps/gridcraft"
 distfiles="https://github.com/storytold/gridcraft/archive/refs/tags/v${version}.tar.gz"
 checksum=8c3997854e19d385aa00082e3f8de091ed4f65127be0b195cb826b3cb3083380
 
-export CARGO_PROFILE_RELEASE_LTO=false
-export CARGO_PROFILE_RELEASE_DEBUG=0
-export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
-export RUST_MIN_STACK=16777216
+export CARGO_PROFILE_RELEASE_LTO=fat
+export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+export CARGO_PROFILE_RELEASE_OPT_LEVEL=3
 
 do_build() {
 	cargo auditable build --release --locked --target ${RUST_TARGET} \
-		${configure_args} --bin gridcraft
-	cargo auditable build --release --locked --target ${RUST_TARGET} \
-		${configure_args} --bin gridcraft-cli
+		${configure_args} --bins
 }
 
 do_install() {
