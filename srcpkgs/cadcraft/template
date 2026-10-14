@@ -13,29 +13,29 @@ homepage="https://getartcraft.com/apps/cadcraft"
 distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
 checksum=4582855972d4a112f838a67414204ba01e3acd178b3891cf5a15d767fa610e28
 
-# Prevent OOM on musl/low-RAM runners during LLVM codegen & linking
-export CARGO_PROFILE_RELEASE_LTO=false
+# Runtime-optimized release profile: fat LTO + single CGU + abort + strip.
+# Costs more build RAM/CPU, but produces the fastest, smallest binaries.
+export CARGO_PROFILE_RELEASE_LTO=fat
+export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+export CARGO_PROFILE_RELEASE_OPT_LEVEL=3
+export CARGO_PROFILE_RELEASE_PANIC=abort
+export CARGO_PROFILE_RELEASE_STRIP=symbols
 export CARGO_PROFILE_RELEASE_DEBUG=0
-export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
-export RUST_MIN_STACK=16777216
+export CARGO_PROFILE_RELEASE_INCREMENTAL=false
 
+# Single cargo invocation: both bins share one dependency graph / link pass.
 do_build() {
-	# Build binaries sequentially so two heavy link steps never collide in RAM
 	cargo auditable build --release --locked --target ${RUST_TARGET} \
-		${configure_args} --bin cadcraft
-	cargo auditable build --release --locked --target ${RUST_TARGET} \
-		${configure_args} --bin cadcraft-cli
+		${configure_args} --bins
 }
 
 do_install() {
 	vbin target/${RUST_TARGET}/release/cadcraft
 	vbin target/${RUST_TARGET}/release/cadcraft-cli
 
-	# Desktop entry & MIME definitions (.dxf / .dwg associations)
 	vinstall packaging/linux/ai.storyteller.cadcraft.desktop 644 usr/share/applications
 	vinstall packaging/linux/ai.storyteller.cadcraft.mime.xml 644 usr/share/mime/packages
 
-	# Raster app icons (cadcraft ships 16..512 including 24x24; check if scalable SVG exists)
 	if [ -f assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg ]; then
 		vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg \
 			644 usr/share/icons/hicolor/scalable/apps
