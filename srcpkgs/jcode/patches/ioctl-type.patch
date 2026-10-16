@@ -1,0 +1,17 @@
+
+--- a/crates/jcode-voice/src/global/hotkey.rs
++++ b/crates/jcode-voice/src/global/hotkey.rs
+@@ -70,7 +70,7 @@
+ }
+ fn ioctl<T>(fd: &File, req: libc::c_ulong, value: &mut T) -> io::Result<()> {
+     // SAFETY: each caller supplies the exact UAPI layout and request size.
+-    if unsafe { libc::ioctl(fd.as_raw_fd(), req, value as *mut T) } < 0 {
++    if unsafe { libc::ioctl(fd.as_raw_fd(), req as libc::Ioctl, value as *mut T) } < 0 {
+         Err(io::Error::last_os_error())
+     } else {
+         Ok(())
+@@ -848,3 +848,4 @@
+ 
+ #[cfg(test)]
+ mod tests;
++
