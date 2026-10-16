@@ -11,7 +11,7 @@ license="MIT"
 homepage="https://jcode.sh/"
 changelog="https://github.com/1jehuang/jcode/releases"
 distfiles="https://github.com/1jehuang/jcode/archive/v${version}.tar.gz"
-checksum=449a8ed50aa9ac75e6afe9b8e916814172ff7cc63913c7ae1f9abd5b1bc5323c
+checksum=271b1f9c38aa1e439b1fb9c0cebff443c8747f34bdf8976b18d8f967ba819641
 
 post_install() {
 	vlicense LICENSE
