@@ -4,6 +4,7 @@ version=0.10.0
 revision=1
 build_style=cargo
 make_build_args="--bins"
+hostmakedepends="pkg-config"
 depends="libxkbcommon vulkan-loader desktop-file-utils hicolor-icon-theme
  shared-mime-info xdg-utils zenity"
 short_desc="Clean-room, Rust-native reimplementation of Adobe Premiere Pro"
