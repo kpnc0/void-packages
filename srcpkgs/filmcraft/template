@@ -32,18 +32,18 @@ do_build() {
 }
 
 do_install() {
-	vbin target/${RUST_TARGET}/release/cadcraft
-	vbin target/${RUST_TARGET}/release/cadcraft-cli
+	vbin target/${RUST_TARGET}/release/filmcraft
+	vbin target/${RUST_TARGET}/release/filmcraft-cli
 
-	vinstall packaging/linux/ai.storyteller.cadcraft.desktop 644 usr/share/applications
-	vinstall packaging/linux/ai.storyteller.cadcraft.mime.xml 644 usr/share/mime/packages
+	vinstall packaging/linux/ai.storyteller.filmcraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/ai.storyteller.filmcraft.mime.xml 644 usr/share/mime/packages
 
-	if [ -f assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg ]; then
-		vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg \
+	if [ -f assets/app-icon/hicolor/scalable/apps/ai.storyteller.filmcraft.svg ]; then
+		vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.filmcraft.svg \
 			644 usr/share/icons/hicolor/scalable/apps
 	fi
 	for _s in 512 256 128 64 48 32 24 16; do
-		vinstall assets/app-icon/hicolor/${_s}x${_s}/apps/ai.storyteller.cadcraft.png \
+		vinstall assets/app-icon/hicolor/${_s}x${_s}/apps/ai.storyteller.filmcraft.png \
 			644 usr/share/icons/hicolor/${_s}x${_s}/apps
 	done
 
