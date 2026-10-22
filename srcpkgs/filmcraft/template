@@ -1,0 +1,50 @@
+# Template file for 'filmcraft'
+pkgname=filmcraft
+version=0.10.0
+revision=1
+build_style=cargo
+make_build_args="--bins"
+depends="libxkbcommon vulkan-loader desktop-file-utils hicolor-icon-theme
+ shared-mime-info xdg-utils zenity"
+short_desc="Clean-room, Rust-native reimplementation of Adobe Premiere Pro"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="MIT, Apache-2.0"
+homepage="https://getartcraft.com/apps/filmcraft"
+distfiles="https://github.com/storytold/filmcraft/archive/refs/tags/v${version}.tar.gz"
+checksum=02bc85868c0c703e52678b4716c9f10b6b16439df8e4f24f601c9dc336f0e15d
+
+# Runtime-optimized release profile: fat LTO + single CGU + abort + strip.
+# Costs more build RAM/CPU, but produces the fastest, smallest binaries.
+export CARGO_PROFILE_RELEASE_LTO=fat
+export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+export CARGO_PROFILE_RELEASE_OPT_LEVEL=3
+export CARGO_PROFILE_RELEASE_PANIC=abort
+export CARGO_PROFILE_RELEASE_STRIP=symbols
+export CARGO_PROFILE_RELEASE_DEBUG=0
+export CARGO_PROFILE_RELEASE_INCREMENTAL=false
+
+# Single cargo invocation: both bins share one dependency graph / link pass.
+do_build() {
+	cargo auditable build --release --locked --target ${RUST_TARGET} \
+		${configure_args} --bins
+}
+
+do_install() {
+	vbin target/${RUST_TARGET}/release/cadcraft
+	vbin target/${RUST_TARGET}/release/cadcraft-cli
+
+	vinstall packaging/linux/ai.storyteller.cadcraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/ai.storyteller.cadcraft.mime.xml 644 usr/share/mime/packages
+
+	if [ -f assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg ]; then
+		vinstall assets/app-icon/hicolor/scalable/apps/ai.storyteller.cadcraft.svg \
+			644 usr/share/icons/hicolor/scalable/apps
+	fi
+	for _s in 512 256 128 64 48 32 24 16; do
+		vinstall assets/app-icon/hicolor/${_s}x${_s}/apps/ai.storyteller.cadcraft.png \
+			644 usr/share/icons/hicolor/${_s}x${_s}/apps
+	done
+
+	vlicense LICENSE-MIT
+	vdoc README.md
+}
