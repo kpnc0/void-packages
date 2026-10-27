@@ -1,6 +1,6 @@
 # Template file for 'cadcraft'
 pkgname=cadcraft
-version=0.10.0
+version=0.13.0
 revision=1
 build_style=cargo
 make_build_args="--bins"
@@ -11,7 +11,7 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT, Apache-2.0"
 homepage="https://getartcraft.com/apps/cadcraft"
 distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
-checksum=fb8df3ce93c0d8dc7702f95683197fd8f50c1af210e382b05627020ed862b29f
+checksum=566574afb38d2717305243970410331f06be95b953cb489dfebe0cdd8246db2d
 
 # Runtime-optimized release profile: fat LTO + single CGU + abort + strip.
 # Costs more build RAM/CPU, but produces the fastest, smallest binaries.
