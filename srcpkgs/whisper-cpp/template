@@ -7,9 +7,10 @@ configure_args="
  -DWHISPER_BUILD_EXAMPLES=ON
  -DWHISPER_BUILD_SERVER=ON
  -DWHISPER_BUILD_TESTS=OFF
+ -DWHISPER_SDL2=ON
 "
 hostmakedepends="cmake ninja git"
-makedepends="ffmpeg-devel"
+makedepends="ffmpeg-devel SDL2-devel"
 short_desc="Port of OpenAI's Whisper model in C/C++"
 maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT"
