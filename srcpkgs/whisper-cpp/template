@@ -10,7 +10,7 @@ configure_args="
  -DGGML_VULKAN=ON
 "
 hostmakedepends="cmake ninja git"
-makedepends="ffmpeg-devel SDL2-devel vulkan-loader-devel shaderc"
+makedepends="ffmpeg-devel SDL2-devel vulkan-loader-devel shaderc SPIRV-Headers SPIRV-Tools"
 short_desc="Port of OpenAI's Whisper model in C/C++"
 maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT"
