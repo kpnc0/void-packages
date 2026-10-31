@@ -8,10 +8,9 @@ configure_args="
  -DWHISPER_BUILD_EXAMPLES=ON
  -DWHISPER_BUILD_SERVER=ON
  -DWHISPER_BUILD_TESTS=OFF
- -DWHISPER_USE_SYSTEM_GGML=ON
 "
 hostmakedepends="cmake ninja git"
-makedepends="ffmpeg-devel ggml-devel"
+makedepends="ffmpeg-devel"
 short_desc="Port of OpenAI's Whisper model in C/C++"
 maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT"
