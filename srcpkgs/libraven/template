@@ -10,4 +10,4 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="Apache-2.0"
 homepage="https://github.com/oscar-soirey/Raven"
 distfiles="https://github.com/oscar-soirey/Raven/archive/refs/tags/v${version}.tar.gz"
-checksum=54e27d1bfa7f195d477dc82a6f8abca39bad3bc14e0eb5fae04671875cd17563
+checksum=9b7dd4dc4c5647f153f0fae6849c315e1836b07efcafc690cdaa9f1736399a1d
