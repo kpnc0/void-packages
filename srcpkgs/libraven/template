@@ -1,5 +1,5 @@
-# Template file for 'Raven'
-pkgname=Raven
+# Template file for 'libraven'
+pkgname=libraven
 version=0.2.0
 revision=1
 build_style=cmake
@@ -10,4 +10,4 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="Apache-2.0"
 homepage="https://github.com/oscar-soirey/Raven"
 distfiles="https://github.com/oscar-soirey/Raven/archive/refs/tags/v${version}.tar.gz"
-checksum=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadb
+checksum=54e27d1bfa7f195d477dc82a6f8abca39bad3bc14e0eb5fae04671875cd17563
