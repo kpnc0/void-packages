@@ -1,7 +1,7 @@
 # Template file for 'whisper-cpp'
 pkgname=whisper-cpp
 version=1.9.5
-revision=69
+revision=2
 build_style=cmake
 configure_args="
  -DWHISPER_BUILD_EXAMPLES=ON
