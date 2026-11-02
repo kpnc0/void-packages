@@ -14,6 +14,10 @@ distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
 checksum=73ef9aeced4a4a3d93dbb3cb0b65a9a1ec3c0efa6c3d4fa4298211919023a5a4
 
 post_install() {
+
+	#install main binary. Angry.
+	vinstall build/goose 755 usr/lib/${pkgname}
+
 	# Install the tcclib and stdlib directories alongside the binary
 	vcopy "build/tcclib" "usr/lib/${pkgname}"
 	vcopy "stdlib" "usr/lib/${pkgname}/stdlib"
