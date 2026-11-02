@@ -1,0 +1,27 @@
+# Template file for 'goose-lang'
+pkgname=goose-lang
+version=2026.3
+revision=1
+build_style=cmake
+configure_args="-DGOOSE_BUILTIN_LIBS= -DCMAKE_BUILD_TYPE=Release"
+hostmakedepends="cmake"
+makedepends="gcc"
+short_desc="Memory-safe systems language with no heap allocator, GC, or lifetime annotations"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="Apache-2.0"
+homepage="https://github.com/aardappel/goose"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+checksum=73ef9aeced4a4a3d93dbb3cb0b65a9a1ec3c0efa6c3d4fa4298211919023a5a4
+
+post_install() {
+	# Install the tcclib and stdlib directories alongside the binary
+	vcopy "build/tcclib" "usr/lib/${pkgname}"
+	vcopy "stdlib" "usr/lib/${pkgname}/stdlib"
+
+	# Create the symlink in /usr/bin pointing to the real binary
+	vmkdir usr/bin
+	ln -sf "/usr/lib/${pkgname}/goose" "${DESTDIR}/usr/bin/goose"
+
+	# Install the license
+	vlicense LICENSE
+}
