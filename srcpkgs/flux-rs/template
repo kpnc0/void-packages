@@ -13,6 +13,13 @@ homepage="https://github.com/killown/flux"
 distfiles="https://github.com/killown/flux/archive/refs/tags/v${version}.tar.gz"
 checksum=d85d9ea617e99f61a76a1f63ad1e09e691c5e69ad4cd2d4eb293542d6b7d8559
 
+do_prepare() {
+    # libc::malloc_trim is glibc-only. Compile the call only when targeting gnu,
+    # so musl builds skip it and glibc builds are unchanged.
+    find src -name '*.rs' -exec sed -i \
+        's/libc::malloc_trim(0);/#[cfg(target_env = "gnu")] libc::malloc_trim(0);/' {} +
+}
+
 do_install() {
     vbin target/release/flux-fm
 }
