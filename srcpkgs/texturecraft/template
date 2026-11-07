@@ -11,7 +11,7 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="MIT, Apache-2.0"
 homepage="https://getartcraft.com/apps/texturecraft"
 distfiles="https://github.com/storytold/texturecraft/archive/refs/tags/v${version}.tar.gz"
-checksum=kkkkkk
+checksum=164c4b140ebdd956ecf3540f4cf9d10b38c0df8002d959ae5315259484905789
 
 export CARGO_PROFILE_RELEASE_LTO=fat
 export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
