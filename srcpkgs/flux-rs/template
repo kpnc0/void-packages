@@ -1,0 +1,18 @@
+# Template file for 'flux-rs'
+pkgname=flux-rs
+version=0.8.0
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config gettext desktop-file-utils"
+makedepends="gtk4-devel libadwaita-devel poppler-glib-devel graphene-devel pango-devel cairo-devel gdk-pixbuf-devel"
+depends="ffmpeg ImageMagick icoutils p7zip"
+short_desc="Fast GTK4/libadwaita file manager written in Rust"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/killown/flux"
+distfiles="https://github.com/killown/flux/archive/refs/tags/v${version}.tar.gz"
+checksum=6b77d8b5de8c2f74a6b0afc709ae6c9a928c18be7a1d740a64ba6b86e78583b6
+
+do_install() {
+    vbin target/release/flux-fm
+}
