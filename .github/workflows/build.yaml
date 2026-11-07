@@ -1,9 +1,9 @@
-name: Build texturecraft on musl
+name: Build flux-rs on musl
 
 on:
   push:
     branches:
-      - texturecraft
+      - flux-rust
   workflow_dispatch:
   release:
     types: [published]
@@ -35,16 +35,16 @@ jobs:
           sudo -Eu builder common/travis/prepare.sh
           common/travis/fetch-xtools.sh
 
-      - name: Build texturecraft
+      - name: Build flux-rs
         run: |
-          sudo -Eu builder ./xbps-src pkg texturecraft
+          sudo -Eu builder ./xbps-src pkg flux-rs
 
       - name: Find and set XBPS package path
         id: verify_xbps
         run: |
-          XBPS_FILE=$(find hostdir/binpkgs -name "texturecraft-*.xbps" | head -n 1)
+          XBPS_FILE=$(find hostdir/binpkgs -name "flux-rs-*.xbps" | head -n 1)
           if [ -z "$XBPS_FILE" ]; then
-            echo "No texturecraft xbps package found!"
+            echo "No flux-rs xbps package found!"
             exit 1
           fi
           echo "xbps_path=$XBPS_FILE" >> $GITHUB_OUTPUT
@@ -67,7 +67,7 @@ jobs:
           git config user.name "Void Bot"
 
           git add -f packages/*.xbps
-          git commit -m "Add texturecraft package from ${{ github.sha }}"
+          git commit -m "Add flux-rs package from ${{ github.sha }}"
           git push -f origin master
         env:
           PERSONAL_PAT: ${{ secrets.PERSONAL_PAT}}
