@@ -11,7 +11,7 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/killown/flux"
 distfiles="https://github.com/killown/flux/archive/refs/tags/v${version}.tar.gz"
-checksum=6b77d8b5de8c2f74a6b0afc709ae6c9a928c18be7a1d740a64ba6b86e78583b6
+checksum=d85d9ea617e99f61a76a1f63ad1e09e691c5e69ad4cd2d4eb293542d6b7d8559
 
 do_install() {
     vbin target/release/flux-fm
