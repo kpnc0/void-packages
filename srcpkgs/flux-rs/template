@@ -11,13 +11,19 @@ maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/killown/flux"
 distfiles="https://github.com/killown/flux/archive/refs/tags/v${version}.tar.gz"
-checksum=d85d9ea617e99f61a76a1f63ad1e09e691c5e69ad4cd2d4eb293542d6b7d8559
+checksum=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadb
 
 do_prepare() {
-    # libc::malloc_trim is glibc-only. Compile the call only when targeting gnu,
-    # so musl builds skip it and glibc builds are unchanged.
-    find src -name '*.rs' -exec sed -i \
-        's/libc::malloc_trim(0);/#[cfg(target_env = "gnu")] libc::malloc_trim(0);/' {} +
+    # libc::malloc_trim exists only on glibc. Gate each call on target_env = "gnu".
+    local files
+    files=$(grep -rl 'libc::malloc_trim' src || true)
+    if [ -z "$files" ]; then
+        msg_error "flux-rs: no malloc_trim calls found; upstream changed, update do_prepare.\n"
+    fi
+    perl -0pi -e 's/libc::malloc_trim\(0\);/#[cfg(target_env = "gnu")] libc::malloc_trim(0);/g' $files
+    if grep -rL 'cfg(target_env = "gnu")\] libc::malloc_trim' $files | grep -q .; then
+        msg_error "flux-rs: malloc_trim patch did not apply to all files.\n"
+    fi
 }
 
 do_install() {
