@@ -1,0 +1,14 @@
+# Template file for 'atlas-filemanager'
+pkgname=atlas-filemanager
+version=0.1.5
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config"
+makedepends="libxkbcommon-devel wayland-devel libxcb-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXinerama-devel mesa-devel fontconfig-devel freetype-devel openssl-devel"
+
+short_desc="Atlas — a native, GPU-accelerated, local-first file manager"
+maintainer="kpnc0 <xpz4yx@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://atlasnative.com/"
+distfiles="https://github.com/neondeex/atlas-filemanager/archive/refs/tags/v${version}.tar.gz"
+checksum=d01002906f31f346881e48d98cecfeff80ea7c25ac8609369b37d0509c40c8d8
