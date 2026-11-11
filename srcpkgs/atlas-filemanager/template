@@ -4,7 +4,7 @@ version=0.1.5
 revision=1
 build_style=cargo
 hostmakedepends="pkg-config"
-makedepends="libxkbcommon-devel wayland-devel libxcb-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXinerama-devel MesaLib-devel fontconfig-devel freetype-devel openssl-devel"
+makedepends="libxkbcommon-devel wayland-devel libxcb-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXinerama-devel MesaLib-devel fontconfig-devel freetype-devel openssl-devel libzstd"
 
 short_desc="Atlas — a native, GPU-accelerated, local-first file manager"
 maintainer="kpnc0 <xpz4yx@gmail.com>"
