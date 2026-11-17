@@ -3,11 +3,11 @@ pkgname=horizon-launcher
 version=0.2.97
 revision=1
 build_style=cargo
-
+make_install_args="--path launcher"
 hostmakedepends="cargo rust pkg-config"
 makedepends="alsa-lib-devel libudev-devel vulkan-loader-devel wayland-devel libxkbcommon-devel libX11-devel libxcb-devel fontconfig-devel"
 depends="alsa-lib vulkan-loader libudev"
-short_desc="A clean room reimplementation of minecraft 26.3 in rust"
+short_desc="Clean room reimplementation of minecraft 26.3 in rust"
 
 maintainer="kpnc0 <xpz4yx@gmail.com>"
 license="GPL-3.0-or-later"
